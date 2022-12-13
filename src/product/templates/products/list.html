@@ -57,9 +57,10 @@
                     </thead>
 
                     <tbody>
-                        {% for product in product_list %}
+                        {% for product in object_list %}
                             <tr>
-                                <td>{{ forloop.counter }}</td>
+                                {% comment %} <td>{{ forloop.counter }}</td> {% endcomment %}
+                                <td>{{ product.id }}</td>
                                 <td>{{ product.title }}</td>
                                 <td>{{ product.description }}</td>
                                 <td>
@@ -81,7 +82,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="" class="btn btn-success">Edit</a>
+                                        <a href="{% url 'product:edit.edit_product' product.id %}" class="btn btn-success">Edit</a>
                                     </div>
                                 </td>
                             </tr>
@@ -96,33 +97,31 @@
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-md-6">
-                    <p>Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} out of {{ page_obj.paginator.count }}</p>
+                    <p>Showing {{ showing_start_index }} to {{ showing_end_index }} out of {{ total_product }}</p>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <!-- Pagination -->
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            {% if page_obj.has_previous %}
+                            {% if has_previous %}
                                 <li class="page-item">
                                     <!-- include search query -->
-                                    <a class="page-link" href="{{search_query}}?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                    <a class="page-link" href="?{{search_query}}page={{ previous_page_number }}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
                                     </a>
                                 </li>
                             {% endif %}
-                            {% for i in page_obj.paginator.page_range %}
-                                {% if page_obj.number == i %}
-                                    <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% for i in page_range %}
+                                {% if page_number == i %}
+                                    <li class="page-item active"><a class="page-link" href="?{{search_query}}page={{ i }}">{{ i }}</a></li>
                                 {% else %}
-                                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="?{{search_query}}page={{ i }}">{{ i }}</a></li>
                                 {% endif %}
                             {% endfor %}
-                            {% if page_obj.has_next %}
+                            {% if has_next %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?{{search_query}}page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <a class="page-link" href="?{{search_query}}page={{ next_page_number }}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
                                     </a>
                                 </li>
                             {% endif %}

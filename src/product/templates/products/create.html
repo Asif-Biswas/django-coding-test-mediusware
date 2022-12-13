@@ -1,21 +1,43 @@
 {% extends 'backend/base.html' %}
 
-{% block title %} Create Product {% endblock %}
+{% block title %} 
+    {% if edit %}
+        Edit Product
+    {% else %}
+        Create Product
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Create Product</h1>
+        {% if edit %}
+            <h1 class="h3 mb-0 text-gray-800">Edit Product</h1>
+        {% else %}
+            <h1 class="h3 mb-0 text-gray-800">Create Product</h1>
+        {% endif %}
         <a href="{% url 'product:create.product' %}" class="float-right btn btn-primary">All Product</a>
     </div>
 
 
     <script>
     var varients = {{ variants|safe }}
-    console.log(typeof varients)
+    var product_obj = {{ product_obj|safe }}
+    var product_variants = {{ product_variants|safe }}
+    var product_images = {{ product_images|safe }}
+    var product_variant_prices = {{ product_variant_prices|safe }}
+    var edit = {{ edit|safe }}
     </script>
 
     <div id="root">
-        <CreateProduct id="variants" data-variants="{{ variants|safe }}"></CreateProduct>
+        <CreateProduct id="variants" 
+            data-variants="{{ variants|safe }}"
+            data-productobj="{{ product_obj|safe }}"
+            data-productvariants="{{ product_variants|safe }}"
+            data-productimages="{{ product_images|safe }}"
+            data-productvariantprices="{{ product_variant_prices|safe }}"
+            data-edit="{{ edit|safe }}"
+        >
+        </CreateProduct>
     </div>
 
 {% endblock %}
