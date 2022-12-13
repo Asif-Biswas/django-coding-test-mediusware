@@ -210,7 +210,6 @@ class ProductView(BaseProductView, generic.ListView):
             product.variants = product_variants
 
         products = [p for p in products if p.id not in product_remove_id_list]
-        print(products)
 
         return products
 
